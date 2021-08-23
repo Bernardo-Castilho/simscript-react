@@ -7,12 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +22,38 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.link-container {
+    display: flex;
+}
+
+.link-container > * {
+    margin: 0 12px;
+}
+
+.link-container nav {
+    height: 100%;
+    padding: 1em;
+    background: #f0f0f0;
+}
+
+.link-container nav > a {
+    display: block;
+}
+
+.link-container > div {
+    flex-grow: 1;
+}
+
+.sim-card button.btn-run {
+    padding: .5em 1em;
+    margin: 1em 0;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    background: #f0f0f0;
+}
+
+.sim-card button.btn-run:hover {
+    background: #e0e0e0;
 }
