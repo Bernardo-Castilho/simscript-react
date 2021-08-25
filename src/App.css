@@ -32,12 +32,21 @@
 
 .link-container nav {
     height: 100%;
-    padding: 1em;
+    padding: 0.5em 0;
+    margin: 0 .5em 0 0;
     background: #f0f0f0;
 }
 
 .link-container nav > a {
     display: block;
+    padding: 0.5em 1em;
+    white-space: nowrap;
+    text-decoration: none;
+    color: unset;
+}
+
+.link-container nav > a:hover {
+    background: #e0e0e0;
 }
 
 .link-container > div {
@@ -56,4 +65,12 @@
 
 .sim-card button.btn-run:hover {
     background: #e0e0e0;
+}
+
+.sim-params label {
+    display: block;
+}
+
+.sim-output ul {
+    column-width: 20em;
 }

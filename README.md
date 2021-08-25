@@ -1,4 +1,3 @@
-- m/m/c output (histo) params (n servers)
-- animated x-walk (SVG)
-- gpss
-- steering (X3D)
+- m/m/c (histo)
+- animated x-walk (X3D)
+- steering
