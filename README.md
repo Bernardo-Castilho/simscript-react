@@ -1,3 +1,6 @@
-- m/m/c (histo)
+* m/m/c (histo)
+* xwalk params, custom out
 - animated x-walk (X3D)
-- steering
+- gpss samples
+- steering samples
+- publish

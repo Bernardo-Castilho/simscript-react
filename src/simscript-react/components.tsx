@@ -1,12 +1,20 @@
 import React from 'react';
 import { Simulation, SimulationState, assert } from 'simscript';
 
-export class SimulationComponent extends React.Component<any, any> {
+
+///////////////////////////////////////////////////////////////////////////////
+// component that renders a Simulation
+interface ISimulationComponentProps<T> {
+    sim: T,
+    name?: string,
+    showNetValues?: boolean
+}
+export class SimulationComponent<T extends Simulation = Simulation> extends React.Component<ISimulationComponentProps<T>, any> {
     _mounted = false;
     _lastUpdate = 0;
 
     // initialize simulation
-    constructor(props: any) {
+    constructor(props: ISimulationComponentProps<T>) {
         super(props);
 
         // this is our simulation
@@ -33,6 +41,7 @@ export class SimulationComponent extends React.Component<any, any> {
         this._mounted = true;
     }
     componentWillUnmount() {
+        this.props.sim.stop();
         this._mounted = false;
     }
 
@@ -92,9 +101,44 @@ export class SimulationComponent extends React.Component<any, any> {
 
     // show stats table by default
     renderOutput(): JSX.Element | null {
-        const sim = this.props.sim;
-        return <div
-            dangerouslySetInnerHTML={this.createMarkup(sim.getStatsTable(this.props.showNetValues))}
-        />;
+        return <HTMLDiv html={this.props.sim.getStatsTable(this.props.showNetValues)} />
     }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// component that provides two-way binding to numeric values
+interface INumericParameterProps {
+    label: string,
+    tag: string,
+    value: number,
+    min: number,
+    max: number,
+    change: (value: number) => void
+}
+export function NumericParameter(props: INumericParameterProps) {
+    return <>
+        <label>
+            <HTMLSpan html={props.label}/>
+            <input type='range'
+                min={props.min}
+                max={props.max}
+                value={props.value}
+                onChange={e => props.change(e.target.valueAsNumber)} />
+            {props.tag}
+        </label>
+    </>;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// component that renders HTML content
+interface IHTMLDivProps {
+    html: string;
+}
+export function HTMLDiv(props: IHTMLDivProps) {
+    return <div dangerouslySetInnerHTML={{ __html: props.html }} />;
+}
+export function HTMLSpan(props: IHTMLDivProps) {
+    return <span dangerouslySetInnerHTML={{ __html: props.html }} />;
 }

@@ -1,8 +1,16 @@
-import { Simulation, Queue, Uniform, Entity } from 'simscript';
+import { Simulation, Queue, Uniform, Entity, setOptions } from 'simscript';
 
 export class BarberShop extends Simulation {
     qJoe = new Queue('Joe', 1);
     qWait = new Queue('Wait Area');
+
+    // initialize Simulation
+    constructor(options?: any) {
+        super();
+        this.name = 'Barbershop';
+        this.timeUnit = 'min';
+        setOptions(this, options);
+    }
 
     // generate entities with inter-arrival times of 18 min for 8 hours * 7 days
     onStarting() {

@@ -22,8 +22,12 @@
   color: #61dafb;
 }
 
-.link-container {
+.content {
     display: flex;
+}
+
+.link-container * {
+    white-space: nowrap;
 }
 
 .link-container > * {
@@ -31,21 +35,42 @@
 }
 
 .link-container nav {
-    height: 100%;
-    padding: 0.5em 0;
-    margin: 0 .5em 0 0;
+    width: 12em;
+    max-height: 80vw;
+    overflow: auto;
+    padding: 0.5em .2em;
+    margin: 0 1.5em 0 0;
     background: #f0f0f0;
 }
 
-.link-container nav > a {
+.link-container nav a {
     display: block;
     padding: 0.5em 1em;
-    white-space: nowrap;
     text-decoration: none;
     color: unset;
 }
 
-.link-container nav > a:hover {
+.link-container summary {
+    padding: .5em 1em;
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 90%;
+    opacity: 0.4;
+    background: #00a2ff29;
+}
+
+.link-container summary:hover {
+    opacity: 1;
+}
+
+.link-container details > a {
+    padding-left: 1.5em;
+}
+
+
+.sim-card button.btn-run:hover,
+.link-container nav a:hover {
     background: #e0e0e0;
 }
 
@@ -63,14 +88,44 @@
     background: #f0f0f0;
 }
 
-.sim-card button.btn-run:hover {
-    background: #e0e0e0;
-}
-
 .sim-params label {
     display: block;
 }
 
 .sim-output ul {
     column-width: 20em;
+}
+
+.sim-output .histograms {
+    display: flex;
+}
+
+.sim-output .error {
+    background: #ffbbbb;
+    color: darkred;
+    font-weight: bold;
+    padding: 1em;
+}
+
+/* crosswalk traffic light cycle parameters */
+span.light {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, .5);
+    vertical-align: text-bottom;
+    margin-right: .3em;
+}
+
+span.light.red {
+    background: red;
+}
+
+span.light.yellow {
+    background: orange;
+}
+
+span.light.green {
+    background: green;
 }

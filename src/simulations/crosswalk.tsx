@@ -1,15 +1,110 @@
-import {
-    Simulation, Entity, Queue, Exponential, Uniform
-} from 'simscript';
+import { Simulation, Entity, Queue, Exponential, Uniform, format, setOptions } from 'simscript';
+import { SimulationComponent, HTMLDiv, NumericParameter } from '../simscript-react/components';
 
+/**
+ * Custom Component to show Crosswalk Simulations with 
+ * Simulation parameters and custom output.
+ */
+export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
+
+    // render parameters section
+    renderParams(): JSX.Element {
+        const sim = this.props.sim;
+
+        return <>
+            <h3>
+                Parameters
+            </h3>
+            <p>
+                Pedestrian traffic light cycles:
+            </p>
+            <ul>
+                <li>
+                    <NumericParameter label='<span class="light red"></span>Red: ' value={sim.cycle.red}
+                        min={0} max={120}
+                        change={v => {
+                            sim.cycle.red = v;
+                            this.forceUpdate();
+                        }}
+                        tag={` ${format(sim.cycle.red, 0)} ${sim.timeUnit}`} />
+                </li>
+                <li>
+                    <NumericParameter label='<span class="light yellow"></span>Yellow: ' value={sim.cycle.yellow}
+                        min={0} max={120}
+                        change={v => {
+                            sim.cycle.yellow = v;
+                            this.forceUpdate();
+                        }}
+                        tag={` ${format(sim.cycle.yellow, 0)} ${sim.timeUnit}`} />
+                </li>
+                <li>
+                    <NumericParameter label='<span class="light green"></span>Green: ' value={sim.cycle.green}
+                        min={0} max={120}
+                        change={v => {
+                            sim.cycle.green = v;
+                            this.forceUpdate();
+                        }}
+                        tag={` ${format(sim.cycle.green, 0)} ${sim.timeUnit}`} />
+                </li>
+            </ul>
+        </>;
+    }
+
+    // render output section
+    renderOutput(): JSX.Element {
+        const
+            sim = this.props.sim,
+            c = sim.cycle,
+            wPavg = (c.yellow + c.red) / (c.yellow + c.red + c.green) * (c.yellow + c.red) / 2,
+            wCavg = (c.yellow + c.green) / (c.yellow + c.red + c.green) * (c.yellow + c.green) / 2,
+            wPmax = c.yellow + c.red,
+            wCmax = c.yellow + c.green;
+        
+        return <>
+            <h3>
+                Results
+            </h3>
+            <ul>
+                <li>
+                    Simulated time: <b>{format(sim.timeNow / 60 / 60)}</b> hours</li>
+                <li>
+                    Elapsed time: <b>{format(sim.timeElapsed / 1000)}</b> seconds</li>
+                <li>
+                    Average Pedestrian Wait: <b>{format(sim.qPedXing.grossDwell.avg)}</b>{' '}
+                    <i>({format(wPavg)})</i> {sim.timeUnit}</li>
+                <li>
+                    Longest Pedestrian Wait: <b>{format(sim.qPedXing.grossDwell.max)}</b>{' '}
+                    <i>({format(wPmax)})</i> {sim.timeUnit}</li>
+                <li>
+                    Average Car Wait: <b>{format(sim.qCarXing.grossDwell.avg)}</b>{' '}
+                    <i>({format(wCavg)})</i> {sim.timeUnit}</li>
+                <li>
+                    Longest Car Wait: <b>{format(sim.qCarXing.grossDwell.max)}</b>{' '}
+                    <i>({format(wCmax)})</i> {sim.timeUnit}</li>
+                <li>
+                    Pedestrian Count: <b>{format(sim.qPedXing.grossDwell.cnt, 0)}</b></li>
+                <li>
+                    Car Count: <b>{format(sim.qCarXing.grossDwell.cnt, 0)}</b></li>
+            </ul>
+
+            <div className='histograms'>
+                <HTMLDiv html={sim.qPedXing.grossPop.getHistogramChart('Pedestrians waiting to cross')} />
+                <HTMLDiv html={sim.qCarXing.grossPop.getHistogramChart('Cars waiting to cross')} />
+            </div>
+                
+        </>;
+    }
+}
+    
+/**
+ * CrossWalk simulation
+ */
 export enum Signal {
     RED,
     YELLOW,
     GREEN,
 }
 
-// CrossWalk simulation
-// time units: seconds
 export class Crosswalk extends Simulation {
     qPedArr = new Queue('Pedestrian Arrival');
     qPedXing = new Queue('Pedestrian Crossing');
@@ -39,13 +134,15 @@ export class Crosswalk extends Simulation {
 
     // initialize Simulation
     constructor(options?: any) {
-        super(options);
+        super();
+        this.name = 'Crosswalk';
         this.timeUnit = 's';
         this.qPedXing.grossPop.setHistogramParameters(3);
         this.qCarXing.grossPop.setHistogramParameters(2);
         if (this.timeEnd == null) {
             this.timeEnd = 3600 * 24; // 24 hours
         }
+        setOptions(this, options);
     }
 
     // create entity generators
