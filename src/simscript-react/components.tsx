@@ -1,18 +1,18 @@
 import React from 'react';
-import { Simulation, SimulationState, assert } from 'simscript';
+import { Simulation, SimulationState, Animation, assert } from 'simscript';
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // component that renders a Simulation
 interface ISimulationComponentProps<T> {
     sim: T,
-    name?: string,
     showNetValues?: boolean,
     animated?: boolean,
 }
 export class SimulationComponent<T extends Simulation = Simulation> extends React.Component<ISimulationComponentProps<T>, any> {
     _mounted = false;
     _lastUpdate = 0;
+    _animRef = React.createRef<HTMLDivElement>();
 
     // initialize simulation
     constructor(props: ISimulationComponentProps<T>) {
@@ -40,6 +40,15 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
     // keep track of mounted state
     componentDidMount() {
         this._mounted = true;
+
+        // initialize animation after mounting
+        if (this.props.animated) {
+            const
+                animRef = this._animRef.current,
+                animHost = animRef?.querySelector('.ss-anim');
+            assert(animHost != null, 'cannot find **ss-anim** element to host the animation');
+            new Animation(this.props.sim, animHost, this.getAnimationOptions());
+        }
     }
     componentWillUnmount() {
         this.props.sim.stop();
@@ -75,16 +84,13 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
             sim = this.props.sim,
             runText = String.fromCharCode(9654) + ' Run',
             stopText = String.fromCharCode(9632) + ' Stop';
-    
-        return <div className='sim-card'>
-            <h2>
-                {this.props.name || sim.name || sim.constructor.name}
-            </h2>
-            <div className='sim-content'>
-                {this.props.children}
-            </div>
+
+        return <div className='sim-cmp'>
             <div className='sim-params'>
                 {this.renderParams()}
+            </div>
+            <div className='sim-animation' ref={this._animRef}>
+                {this.props.animated && this.renderAnimation()}
             </div>
             <button className='btn-run' onClick={e => this.clickRun(e)}>
                 {sim.state !== SimulationState.Running ? runText : stopText}
@@ -104,6 +110,15 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
     renderOutput(): JSX.Element | null {
         return <HTMLDiv html={this.props.sim.getStatsTable(this.props.showNetValues)} />
     }
+
+    // no anumation by default
+    renderAnimation(): JSX.Element | null {
+        return null;
+    }
+    getAnimationOptions(): any {
+        return null;
+    }
+
 }
 
 
@@ -112,8 +127,8 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
 interface IParameterProps<T> {
     label: string,
     value: T,
-    min: number,
-    max: number,
+    min?: number,
+    max?: number,
     change: (value: T) => void,
     parent: React.Component,
     suffix?: string,

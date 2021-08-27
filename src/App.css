@@ -1,27 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 .content {
     display: flex;
 }
@@ -30,7 +6,7 @@
     white-space: nowrap;
 }
 
-.link-container > * {
+.link-container>* {
     margin: 0 12px;
 }
 
@@ -58,7 +34,7 @@
     font-size: 90%;
     background: #00a2ff29;
     border-radius: 1em 0 0 1em;
-    opacity: 0.4;
+    opacity: 0.5;
 }
 
 .link-container summary:hover {
@@ -66,21 +42,21 @@
     transition: opacity .5s;
 }
 
-.link-container details > a {
+.link-container details>a {
     padding-left: 1.5em;
 }
 
 
-.sim-card button.btn-run:hover,
+.sim-cmp button.btn-run:hover,
 .link-container nav a:hover {
     background: #e0e0e0;
 }
 
-.link-container > div {
+.link-container>div {
     flex-grow: 1;
 }
 
-.sim-card button.btn-run {
+.sim-cmp button.btn-run {
     padding: .5em 1em;
     margin: 1em 0;
     border-radius: 0;
@@ -94,12 +70,18 @@
     display: block;
 }
 
+/*
 .sim-output ul {
     column-width: 20em;
 }
+*/
 
 .sim-output .histograms {
     display: flex;
+}
+
+.ss-histogram {
+    max-width: 30em;
 }
 
 .sim-output .error {
@@ -130,4 +112,46 @@ span.light.yellow {
 
 span.light.green {
     background: green;
+}
+
+/* crosswalk SVG animation*/
+svg.ss-anim {
+    height: 300px;
+    border: 2px solid black;
+    padding: 12px;
+}
+
+svg.ss-anim g.light {
+    fill: rgba(0, 0, 0, 0.1);
+    stroke: rgba(0, 0, 0, 0.3);
+    stroke-width: 2px;
+}
+
+svg.ss-anim g.light circle {
+    opacity: 0.2;
+}
+
+svg.ss-anim g.light circle.red {
+    fill: red;
+}
+
+svg.ss-anim g.light circle.yellow {
+    fill: yellow;
+}
+
+svg.ss-anim g.light circle.green {
+    fill: green;
+}
+
+svg.ss-anim .ss-queue {
+    fill: orange;
+    opacity: 0.3;
+}
+
+svg.ss-anim .street {
+    fill: rgba(0, 0, 0, 0.1);
+}
+
+svg.ss-anim .crosswalk {
+    fill: rgba(0, 0, 0, 0.3);
 }

@@ -10,7 +10,6 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
     // render parameters section
     renderParams(): JSX.Element {
         const sim = this.props.sim;
-
         return <>
             <h3>
                 Parameters
@@ -87,6 +86,65 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
             </div>
                 
         </>;
+    }
+
+    // render animation section
+    renderAnimation(): JSX.Element {
+        return <svg className='ss-anim' viewBox='0 0 1000 500'>
+            <g className='light'>
+                <rect className='light' x='47.5%' y='0%' width='5%' height='25%' rx='2%'/>
+                <circle className='red' cx='50%' cy='5%' r='2%'/>
+                <circle className='yellow' cx='50%' cy='12.5%' r='2%'/>
+                <circle className='green' cx='50%' cy='20%' r='2%'/>
+            </g>
+
+            <rect className='street' x='10%' y='50%' width='80%' height='20%'/>
+            <rect className='crosswalk' x='45%' y='50%' width='10%' height='20%'/>
+
+            <circle className='ss-queue car-arr' cx='10%' cy='60%' r='10'/>
+            <circle className='ss-queue car-xing' cx='40%' cy='60%' r='10'/>
+            <circle className='ss-queue car-xed' cx='90%' cy='60%' r='10'/>
+
+            <circle className='ss-queue ped-arr' cx='10%' cy='85%' r='10'/>
+            <circle className='ss-queue ped-xing' cx='50%' cy='75%' r='10'/>
+            <circle className='ss-queue ped-xed' cx='50%' cy='45%' r='10'/>
+            <circle className='ss-queue ped-leave' cx='90%' cy='35%' r='10'/>
+        </svg>
+    }
+
+    // get animation options
+    getAnimationOptions(): any {
+        const sim = this.props.sim;
+        return {
+            getEntityHtml: (e: Entity) => {
+                if (e instanceof Pedestrian) {
+                    return `<g class='ped' fill='black' stroke='black' opacity='0.8' transform='scale(1,0.8)'>
+                        <circle cx='1%' cy='1%' r='0.5%' fill='orange'/>
+                        <rect x='.4%' y='2%' width='1.3%' height='4%' fill='green' rx='0.7%'/>
+                        <rect x='.66%' y='4%' width='.8%' height='3%' fill='blue'/>
+                        <rect x='.4%' y='7%' width='1.3%' height='.75%' rx='0.5%'/>
+                    </g>`;
+                } else {
+                    return `<g class='car' fill='black' stroke='black'>
+                        <rect x='1%' y='0' width='5%' height='4%' rx='1%'/>
+                        <rect x='0' y='1.5%' width='9%' height='3%' fill='red' rx='0.5%'/>
+                        <circle cx='1.5%' cy='4%' r='.9%' opacity='0.8'/>
+                        <circle cx='7.5%' cy='4%' r='.9%' opacity='0.8'/>
+                        <rect x='0' y='0' width='10%' height='1%' opacity='0'/>
+                    </g>`;
+                }
+            },
+            queues: [
+                { queue: sim.qPedArr, element: 'svg .ss-queue.ped-arr' },
+                { queue: sim.qPedXing, element: 'svg .ss-queue.ped-xing', angle: -45, max: 8 },
+                { queue: sim.qPedXed, element: 'svg .ss-queue.ped-xed' },
+                { queue: sim.qPedLeave, element: 'svg .ss-queue.ped-leave' },
+
+                { queue: sim.qCarArr, element: 'svg .ss-queue.car-arr' },
+                { queue: sim.qCarXing, element: 'svg .ss-queue.car-xing', angle: 0, max: 16 },
+                { queue: sim.qCarXed, element: 'svg .ss-queue.car-xed' },
+            ]
+        };
     }
 }
     

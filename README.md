@@ -9,7 +9,6 @@ It also shows how you can extend from **SimulationComponent** to create
 components that show simulations with custom handling for simulation 
 parameters and custom output.
 
-- animated x-walk (X3D)
 - GPSS samples
 - Steering samples
 - publish
