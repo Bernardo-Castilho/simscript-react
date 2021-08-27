@@ -78,7 +78,7 @@ export class MMCComponent extends SimulationComponent<MMC> {
                 ** The server utilization exceeds 100%; the system will not reach a steady-state. **
             </p>}
 
-            <ul>
+            <ul className='multi-column'>
                 <li>
                     Simulated time:{' '}
                     <b>{format(sim.timeNow / 60, 0)}</b> hours</li>

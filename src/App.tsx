@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    BrowserRouter,
-    Switch,
-    Route,
-    Link
+import { BrowserRouter, Switch, Route, Link, NavLink
 } from 'react-router-dom';
 
 import { SimulationComponent } from './simscript-react/components';
@@ -20,12 +16,19 @@ import { OrderPoint, OrderPointComponent } from './simulations/gpss/order-point'
 import { Textile, TextileComponent } from './simulations/gpss/textile';
 
 // Steering samples
-
+// TODO...
 
 import 'simscript/dist/simscript.css';
 import './App.css';
 
-export default function App() {
+// link with active class name
+function MyLink(props: any) {
+    return <NavLink exact activeClassName='active' to={props.to}>
+        {props.children}
+    </NavLink>;
+}
+
+export default function App(props: any) {
     return (
         <BrowserRouter>
             <h1>
@@ -34,28 +37,28 @@ export default function App() {
             <div className='content'>
                 <div className='link-container'>
                     <nav>
-                        <Link to='/'>Home</Link>
+                        <MyLink to='/'>Home</MyLink>
                         <details open={true}>
                             <summary>SimScript samples</summary>
-                            <Link to='/bshop'>Barbershop</Link>
-                            <Link to='/mmc'>M/M/C (default)</Link>
-                            <Link to='/mmc-cst'>M/M/C (custom)</Link>
-                            <Link to='/xwlk'>Crosswalk</Link>
-                            <Link to='/xwlk-anim'>Crosswalk (animated)</Link>
+                            <MyLink to='/bshop'>Barbershop</MyLink>
+                            <MyLink to='/mmc'>M/M/C (default)</MyLink>
+                            <MyLink to='/mmc-cst'>M/M/C (custom)</MyLink>
+                            <MyLink to='/xwlk'>Crosswalk</MyLink>
+                            <MyLink to='/xwlk-anim'>Crosswalk (animated)</MyLink>
                         </details>
                         <details>
                             <summary>GPSS samples</summary>
-                            <Link to='/phone'>Telephone System</Link>
-                            <Link to='/tv'>TV Repair Shop</Link>
-                            <Link to='/order'>Order Point</Link>
-                            <Link to='/textile'>Textile Factory</Link>
+                            <MyLink to='/phone'>Telephone System</MyLink>
+                            <MyLink to='/tv'>TV Repair Shop</MyLink>
+                            <MyLink to='/order'>Order Point</MyLink>
+                            <MyLink to='/textile'>Textile Factory</MyLink>
                         </details>
                         <details>
                             <summary>Steering samples</summary>
-                            <Link to='/seek'>Seek</Link>
-                            <Link to='/avoid'>Avoid</Link>
-                            <Link to='/seek-avoid'>Seek and Avoid</Link>
-                            <Link to='/network'>Network</Link>
+                            <MyLink to='/seek'>Seek</MyLink>
+                            <MyLink to='/avoid'>Avoid</MyLink>
+                            <MyLink to='/seek-avoid'>Seek and Avoid</MyLink>
+                            <MyLink to='/network'>Network</MyLink>
                         </details>
                     </nav>
                 </div>
@@ -69,8 +72,8 @@ export default function App() {
                     {/* SimScript samples */}
                     <Route path='/bshop'>
                         <div>
-                            <h2>
-                                BarberShop</h2>
+                            <h1>
+                                BarberShop Simulation</h1>
                             <p>
                                 A <a href='https://try-mts.com/gpss-introduction-and-barber-shop-simulation/'>
                                 classic GPSS simulation example</a>:
@@ -81,8 +84,8 @@ export default function App() {
                     </Route>
                     <Route path='/mmc'>
                         <div>
-                            <h2>
-                                M/M/C (default)</h2>
+                            <h1>
+                                M/M/C Simulation (default)</h1>
                             <p>
                                 A <a href='https://en.wikipedia.org/wiki/M/M/c_queue'>
                                 classic M/M/C queueing system</a>.
@@ -94,8 +97,8 @@ export default function App() {
                     </Route>
                     <Route path='/mmc-cst'>
                         <div>
-                            <h2>
-                                M/M/C (custom)</h2>
+                            <h1>
+                                M/M/C Simulation (custom)</h1>
                             <p>
                                 A <a href='https://en.wikipedia.org/wiki/M/M/c_queue'>
                                 classic M/M/C queueing system</a>.
@@ -114,8 +117,8 @@ export default function App() {
                     </Route>
                     <Route path='/xwlk'>
                         <div>
-                            <h2>
-                                Crosswalk</h2>
+                            <h1>
+                                Crosswalk Simulation</h1>
                             <p>
                                 Simulates a crosswalk with a traffic light.</p>
                             <p>
@@ -125,8 +128,8 @@ export default function App() {
                     </Route>
                     <Route path='/xwlk-anim'>
                         <div>
-                            <h2>
-                                Crosswalk (animated)</h2>
+                            <h1>
+                                Crosswalk Simulation (animated)</h1>
                             <p>
                                 Simulates a crosswalk with a traffic light.</p>
                             <p>
@@ -141,8 +144,8 @@ export default function App() {
                     {/* GPSS samples */}
                     <Route path='/phone'>
                         <div>
-                            <h2>
-                                Telephone System</h2>
+                            <h1>
+                                Telephone System Simulation</h1>
                             <p>
                                 A simple telephone system has two external lines.
                                 Calls, which originate externally, arrive every 100±60 seconds.
@@ -158,8 +161,8 @@ export default function App() {
                     </Route>
                     <Route path='/tv'>
                         <div>
-                            <h2>
-                                TV Repair Shop</h2>
+                            <h1>
+                                TV Repair Shop Simulation</h1>
                             <p>
                                 A television shop employs a single repairman to overhaul its rented
                                 television sets, service customers’ sets and do on-the-spot repairs.</p>
@@ -188,8 +191,8 @@ export default function App() {
                     </Route>
                     <Route path='/order'>
                         <div>
-                            <h2>
-                                Order Point</h2>
+                            <h1>
+                                Order Point Simulation</h1>
                             <p>
                                 An inventory system is controlled by an order point, set at 600 units,
                                 and an economic order quantity of 500 units.</p>
@@ -207,8 +210,8 @@ export default function App() {
                     </Route>
                     <Route path='/textile'>
                         <div>
-                            <h2>
-                                Textile Factory</h2>
+                            <h1>
+                                Textile Factory Simulation</h1>
                             <p>
                                 A textile factory produces fine mohair yarn in three departments.</p>
                             <p>
@@ -239,16 +242,16 @@ export default function App() {
 
                     {/* Steering samples */}
                     <Route path='/seek'>
-                        <h2>Seek</h2>
+                        <h1>Seek Simulation</h1>
                     </Route>
                     <Route path='/avoid'>
-                        <h2>Avoid</h2>
+                        <h1>Avoid Simulation</h1>
                     </Route>
                     <Route path='/seek-avoid'>
-                        <h2>Seek and Avoid</h2>
+                        <h1>Seek and Avoid Simulation</h1>
                     </Route>
                     <Route path='/network'>
-                        <h2>Network</h2>
+                        <h1>Network Simulation</h1>
                     </Route>
 
                     {/* home */}
@@ -264,11 +267,10 @@ export default function App() {
 //
 function Home() {
     return <div>
-        <h2>
-            Home
-        </h2>
+        <h1>
+            SimScript/React Sample</h1>
         <p>
-            This sample shows several simulations written with{' '}
+            This is a React application that shows simulations written with{' '}
             <a href='https://www.npmjs.com/package/simscript'><b>SimScript</b></a>,
             a Discrete Event Simulation Library in TypeScript with support for
             2D and 3D animations.</p>

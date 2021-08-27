@@ -103,7 +103,7 @@ export function getLineChart(title: string, ...series: IChartSeries[]): string {
                     }
 
                     // last point
-                    if (i == s.data.length - 2) {
+                    if (i === s.data.length - 2) {
                         svg += `<circle cx=${x2.toFixed(1)}% cy=${y2.toFixed(1)}% ${radius}>
                             <title>${format(s.data[i + 1], 0)}</title>
                         </circle>`;

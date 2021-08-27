@@ -1,3 +1,22 @@
+/* to position h1 elements in each page */
+#root {
+    position: relative;
+}
+
+#root > h1 {
+    opacity: 0;
+}
+
+.content h1 {
+    position: absolute;
+    left: 0;
+    top: -.5em;
+}
+
+.content p {
+    margin-top: 0;
+}
+
 .content {
     display: flex;
 }
@@ -48,7 +67,8 @@
 
 
 .sim-cmp button.btn-run:hover,
-.link-container nav a:hover {
+.link-container nav a:hover,
+.link-container nav a.active {
     background: #e0e0e0;
 }
 
@@ -64,17 +84,16 @@
     font-size: inherit;
     border: none;
     background: #f0f0f0;
+    font-size: 125%;
 }
 
 .sim-params label {
     display: block;
 }
 
-/*
-.sim-output ul {
-    column-width: 20em;
+.sim-output ul.multi-column {
+    column-width: 14em;
 }
-*/
 
 .sim-output .histograms {
     display: flex;
