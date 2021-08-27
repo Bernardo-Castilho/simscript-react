@@ -1,7 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link, NavLink
-} from 'react-router-dom';
-
+import { BrowserRouter, Switch, Route, Link, NavLink } from 'react-router-dom';
 import { SimulationComponent } from './simscript-react/components';
 
 // SimScript samples
@@ -28,7 +26,8 @@ function MyLink(props: any) {
     </NavLink>;
 }
 
-export default function App(props: any) {
+// application
+export default function App() {
     return (
         <BrowserRouter>
             <h1>
@@ -242,16 +241,32 @@ export default function App(props: any) {
 
                     {/* Steering samples */}
                     <Route path='/seek'>
-                        <h1>Seek Simulation</h1>
+                        <div>
+                            <h1>Seek Simulation</h1>
+                            <p>
+                                A seek simulation is a simple example of a steering agent.</p>
+                        </div>
                     </Route>
                     <Route path='/avoid'>
-                        <h1>Avoid Simulation</h1>
+                        <div>
+                            <h1>Avoid Simulation</h1>
+                            <p>
+                                Simulates a vehicle that avoids obstacles.</p>
+                        </div>
                     </Route>
                     <Route path='/seek-avoid'>
-                        <h1>Seek and Avoid Simulation</h1>
+                        <div>
+                            <h1>Seek and Avoid Simulation</h1>
+                            <p>
+                                A car is in a circular road with a radius of 100 units.</p>
+                        </div>
                     </Route>
                     <Route path='/network'>
-                        <h1>Network Simulation</h1>
+                        <div>
+                            <h1>Network Steering Simulation</h1>
+                            <p>
+                                A network of vehicles is simulated.</p>
+                        </div>
                     </Route>
 
                     {/* home */}
@@ -268,9 +283,9 @@ export default function App(props: any) {
 function Home() {
     return <div>
         <h1>
-            SimScript/React Sample</h1>
+            SimScript/React Demo</h1>
         <p>
-            This is a React application that shows simulations written with{' '}
+            This demo is a <b>React</b> app that shows simulations created with{' '}
             <a href='https://www.npmjs.com/package/simscript'><b>SimScript</b></a>,
             a Discrete Event Simulation Library in TypeScript with support for
             2D and 3D animations.</p>

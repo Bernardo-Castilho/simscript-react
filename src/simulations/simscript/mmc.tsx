@@ -99,19 +99,19 @@ export class MMCComponent extends SimulationComponent<MMC> {
                     <b>{format(sim.qService.grossPop.avg / c * 100, 0)}%</b>{' '}
                     (<i>{format(rho * 100, 0)}%</i>)</li>
                 <li>
-                    Average Wait:{' '}
-                    <b>{format(sim.qWait.grossDwell.avg, 0)}</b>{' '}
-                    (<i>{format(wq, 0)})</i> {sim.timeUnit}</li>
+                    Mean Wait:{' '}
+                    <b>{format(sim.qWait.grossDwell.avg, 2)}</b>{' '}
+                    (<i>{format(wq, 2)})</i> {sim.timeUnit}</li>
                 <li>
-                    Average Queue:{' '}
-                    <b>{format(sim.qWait.grossPop.avg, 0)}</b>{' '}
-                    (<i>{format(lq, 0)}</i>) customers</li>
+                    Mean Queue:{' '}
+                    <b>{format(sim.qWait.grossPop.avg, 2)}</b>{' '}
+                    (<i>{format(lq, 2)}</i>) cust</li>
                 <li>
                     Longest Wait:{' '}
                     <b>{format(sim.qWait.grossDwell.max, 0)}</b> {sim.timeUnit}</li>
                 <li>
                     Longest Queue:{' '}
-                    <b>{format(sim.qWait.grossPop.max, 0)}</b> customers</li>
+                    <b>{format(sim.qWait.grossPop.max, 0)}</b> cust</li>
                 <li>
                     Customers Served:{' '}
                     <b>{format(sim.qService.grossDwell.cnt, 0)}</b></li>
