@@ -1,5 +1,5 @@
 import { Simulation, Entity, Queue, Exponential, Uniform, format, setOptions } from 'simscript';
-import { SimulationComponent, HTMLDiv, NumericParameter } from '../simscript-react/components';
+import { SimulationComponent, HTMLDiv, NumericParameter } from '../../simscript-react/components';
 
 /**
  * Custom Component to show Crosswalk Simulations with 
@@ -20,31 +20,25 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
             </p>
             <ul>
                 <li>
-                    <NumericParameter label='<span class="light red"></span>Red: ' value={sim.cycle.red}
+                    <NumericParameter label='<span class="light red"></span>Red: ' parent={this}
+                        value={sim.cycle.red}
                         min={0} max={120}
-                        change={v => {
-                            sim.cycle.red = v;
-                            this.forceUpdate();
-                        }}
-                        tag={` ${format(sim.cycle.red, 0)} ${sim.timeUnit}`} />
+                        change={v => sim.cycle.red = v}
+                        suffix={` ${format(sim.cycle.red, 0)} ${sim.timeUnit}`} />
                 </li>
                 <li>
-                    <NumericParameter label='<span class="light yellow"></span>Yellow: ' value={sim.cycle.yellow}
+                    <NumericParameter label='<span class="light yellow"></span>Yellow: ' parent={this}
+                        value={sim.cycle.yellow}
                         min={0} max={120}
-                        change={v => {
-                            sim.cycle.yellow = v;
-                            this.forceUpdate();
-                        }}
-                        tag={` ${format(sim.cycle.yellow, 0)} ${sim.timeUnit}`} />
+                        change={v => sim.cycle.yellow = v}
+                        suffix={` ${format(sim.cycle.yellow, 0)} ${sim.timeUnit}`} />
                 </li>
                 <li>
-                    <NumericParameter label='<span class="light green"></span>Green: ' value={sim.cycle.green}
+                    <NumericParameter label='<span class="light green"></span>Green: ' parent={this}
+                        value={sim.cycle.green}
                         min={0} max={120}
-                        change={v => {
-                            sim.cycle.green = v;
-                            this.forceUpdate();
-                        }}
-                        tag={` ${format(sim.cycle.green, 0)} ${sim.timeUnit}`} />
+                        change={v => sim.cycle.green = v}
+                        suffix={` ${format(sim.cycle.green, 0)} ${sim.timeUnit}`} />
                 </li>
             </ul>
         </>;

@@ -7,7 +7,8 @@ import { Simulation, SimulationState, assert } from 'simscript';
 interface ISimulationComponentProps<T> {
     sim: T,
     name?: string,
-    showNetValues?: boolean
+    showNetValues?: boolean,
+    animated?: boolean,
 }
 export class SimulationComponent<T extends Simulation = Simulation> extends React.Component<ISimulationComponentProps<T>, any> {
     _mounted = false;
@@ -108,26 +109,40 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
 
 ///////////////////////////////////////////////////////////////////////////////
 // component that provides two-way binding to numeric values
-interface INumericParameterProps {
+interface IParameterProps<T> {
     label: string,
-    tag: string,
-    value: number,
+    value: T,
     min: number,
     max: number,
-    change: (value: number) => void
+    change: (value: T) => void,
+    parent: React.Component,
+    suffix?: string,
 }
-export function NumericParameter(props: INumericParameterProps) {
-    return <>
-        <label>
-            <HTMLSpan html={props.label}/>
-            <input type='range'
-                min={props.min}
-                max={props.max}
-                value={props.value}
-                onChange={e => props.change(e.target.valueAsNumber)} />
-            {props.tag}
-        </label>
-    </>;
+export function NumericParameter(props: IParameterProps<number>) {
+    return <label>
+        <HTMLSpan html={props.label} />
+        <input type='range'
+            min={props.min}
+            max={props.max}
+            value={props.value}
+            onChange={e => {
+                props.change(e.target.valueAsNumber);
+                props.parent.forceUpdate();
+            }} />
+        {props.suffix}
+    </label>;
+}
+export function BooleanParameter(props: IParameterProps<boolean>) {
+    return <label>
+        <HTMLSpan html={props.label} />
+        <input type='checkbox'
+            checked={props.value}
+            onChange={e => {
+                props.change(e.target.checked);
+                props.parent.forceUpdate();
+            }} />
+        {props.suffix}
+    </label>;
 }
 
 

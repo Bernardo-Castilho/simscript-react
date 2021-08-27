@@ -56,12 +56,14 @@
     text-transform: uppercase;
     font-weight: bold;
     font-size: 90%;
-    opacity: 0.4;
     background: #00a2ff29;
+    border-radius: 1em 0 0 1em;
+    opacity: 0.4;
 }
 
 .link-container summary:hover {
     opacity: 1;
+    transition: opacity .5s;
 }
 
 .link-container details > a {
