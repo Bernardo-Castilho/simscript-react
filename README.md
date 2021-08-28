@@ -9,6 +9,6 @@ You can extend from **SimulationComponent** to create components that
 render simulations with custom handling for simulation parameters,
 custom output, and animations.
 
-- Steering samples (svg)
+- Steering samples parameters/animations (svg)
 - simscript => Simulation.stop(reset)
 - publish

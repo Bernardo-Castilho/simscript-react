@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import { SimulationComponent } from './simscript-react/components';
 
 // SimScript samples
@@ -14,7 +14,10 @@ import { OrderPoint, OrderPointComponent } from './simulations/gpss/order-point'
 import { Textile, TextileComponent } from './simulations/gpss/textile';
 
 // Steering samples
-// TODO...
+import { SteeringSeek } from './simulations/steering/seek';
+import { SteeringAvoid } from './simulations/steering/avoid';
+import { SteeringLinearObstaclesSeek } from './simulations/steering/seek-avoid';
+import { NetworkSteering }  from './simulations/steering/network';
 
 import 'simscript/dist/simscript.css';
 import './App.css';
@@ -244,28 +247,47 @@ export default function App() {
                         <div>
                             <h1>Seek Simulation</h1>
                             <p>
-                                A seek simulation is a simple example of a steering agent.</p>
+                                This sample shows entities that implement a <b>SeekBehavior</b>.</p>
+                            <p>
+                                They move towards the center of the animation, slow down as they
+                                approach the target, and restart from a random position when they
+                                reach the target.</p>
+                            <SimulationComponent key='seek' sim={new SteeringSeek()}/>
                         </div>
                     </Route>
                     <Route path='/avoid'>
                         <div>
                             <h1>Avoid Simulation</h1>
                             <p>
-                                Simulates a vehicle that avoids obstacles.</p>
+                                Shows how to implement an <b>AvoidBehavior</b> that causes entities
+                                to avoid obstacles.</p>
+                            <p>
+                                In this example, in addition to the static obstacles shown as grey
+                                circles, other entities are also treated as obstacles.</p>
+                            <SimulationComponent key='avoid' sim={new SteeringAvoid({avoidEntities: true})}/>
                         </div>
                     </Route>
                     <Route path='/seek-avoid'>
                         <div>
                             <h1>Seek and Avoid Simulation</h1>
                             <p>
-                                A car is in a circular road with a radius of 100 units.</p>
+                                Entities use a <b>SeekBehavior</b> to reach the exit and an
+                                <b>AvoidBehavior</b> to avoid walls and other entities.</p>
+                            <SimulationComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()}/>
                         </div>
                     </Route>
                     <Route path='/network'>
                         <div>
                             <h1>Network Steering Simulation</h1>
                             <p>
-                                A network of vehicles is simulated.</p>
+                                Shows how you can use steering behaviors with networks.</p>
+                            <p>
+                                The sample creates a network and uses it to create paths for
+                                the entities.</p>
+                            <p>
+                                Entities traverse the paths using a <b>NetworkSeekBehavior</b>
+                                and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
+                            <SimulationComponent key='network' sim={new NetworkSteering()}/>
                         </div>
                     </Route>
 
