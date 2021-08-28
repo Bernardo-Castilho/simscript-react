@@ -17,7 +17,7 @@ import { Textile, TextileComponent } from './simulations/gpss/textile';
 import { SteeringSeek } from './simulations/steering/seek';
 import { SteeringAvoid } from './simulations/steering/avoid';
 import { SteeringLinearObstaclesSeek } from './simulations/steering/seek-avoid';
-import { NetworkSteering }  from './simulations/steering/network';
+import { NetworkSteering } from './simulations/steering/network';
 
 import 'simscript/dist/simscript.css';
 import './App.css';
@@ -78,10 +78,10 @@ export default function App() {
                                 BarberShop Simulation</h1>
                             <p>
                                 A <a href='https://try-mts.com/gpss-introduction-and-barber-shop-simulation/'>
-                                classic GPSS simulation example</a>:
+                                    classic GPSS simulation example</a>:
                                 customers arrive at a barbershop, wait until the barber is available,
                                 get serviced, and leave.</p>
-                            <SimulationComponent key={'bshop'} sim={new BarberShop()}/>
+                            <SimulationComponent key={'bshop'} sim={new BarberShop()} />
                         </div>
                     </Route>
                     <Route path='/mmc'>
@@ -90,11 +90,11 @@ export default function App() {
                                 M/M/C Simulation (default)</h1>
                             <p>
                                 A <a href='https://en.wikipedia.org/wiki/M/M/c_queue'>
-                                classic M/M/C queueing system</a>.
+                                    classic M/M/C queueing system</a>.
                                 Entities arrive, are served by one of C servers, and leave.</p>
                             <p>
                                 This version shows the standard <b>SimScript</b> output table.</p>
-                            <SimulationComponent key='mmc' sim={new MMC()}/>
+                            <SimulationComponent key='mmc' sim={new MMC()} />
                         </div>
                     </Route>
                     <Route path='/mmc-cst'>
@@ -103,7 +103,7 @@ export default function App() {
                                 M/M/C Simulation (custom)</h1>
                             <p>
                                 A <a href='https://en.wikipedia.org/wiki/M/M/c_queue'>
-                                classic M/M/C queueing system</a>.
+                                    classic M/M/C queueing system</a>.
                                 Entities arrive, are served by one of C servers, and leave.</p>
                             <p>
                                 This version shows a custom component that:</p>
@@ -125,7 +125,7 @@ export default function App() {
                                 Simulates a crosswalk with a traffic light.</p>
                             <p>
                                 Shows how to use the <b>waitsignal</b> and <b>sendSignal</b> methods.</p>
-                            <CrosswalkComponent key='xwlk' sim={new Crosswalk()}/>
+                            <CrosswalkComponent key='xwlk' sim={new Crosswalk()} />
                         </div>
                     </Route>
                     <Route path='/xwlk-anim'>
@@ -139,7 +139,7 @@ export default function App() {
                             <CrosswalkComponent
                                 key='xwlk-anim'
                                 sim={new Crosswalk({ maxTimeStep: 1, frameDelay: 20 })}
-                                animated={true}/>
+                                animated={true} />
                         </div>
                     </Route>
 
@@ -167,20 +167,20 @@ export default function App() {
                                 TV Repair Shop Simulation</h1>
                             <p>
                                 A television shop employs a single repairman to overhaul its rented
-                                television sets, service customers’ sets and do on-the-spot repairs.</p>
+                                television sets, service customers' sets and do on-the-spot repairs.</p>
                             <ul>
                                 <li>
                                     Overhaul of company owned television sets commences every 40±8 hours
                                     and takes 10±1 hours to complete.</li>
                                 <li>
                                     On-the-spot repairs, such as fuse replacement, tuning and adjustments
-                                    are done immediately. These arrive every 90±10 minutes and take 15±5 
+                                    are done immediately. These arrive every 90±10 minutes and take 15±5
                                     minutes.</li>
                                 <li>
-                                    Customers’ television sets requiring normal service arrive every 5±1
+                                    Customers' television sets requiring normal service arrive every 5±1
                                     hours and take 120±30 minutes to complete.</li>
                                 <li>
-                                    Normal service of television sets has a higher priority than the 
+                                    Normal service of television sets has a higher priority than the
                                     overhaul of company owned, rented sets.</li>
                             </ul>
                             <p>
@@ -238,7 +238,7 @@ export default function App() {
                                 Simulate the production process in the textile factory for 5 days to find
                                 (1)&nbsp;The distribution of the in-process inventories and
                                 (2)&nbsp;The utilization of each of the three types of machines.</p>
-                            <TextileComponent key='textile' sim={new Textile()}/>
+                            <TextileComponent key='textile' sim={new Textile()} />
                         </div>
                     </Route>
 
@@ -252,7 +252,7 @@ export default function App() {
                                 They move towards the center of the animation, slow down as they
                                 approach the target, and restart from a random position when they
                                 reach the target.</p>
-                            <SimulationComponent key='seek' sim={new SteeringSeek()}/>
+                            <SimulationComponent key='seek' sim={new SteeringSeek()} />
                         </div>
                     </Route>
                     <Route path='/avoid'>
@@ -264,7 +264,7 @@ export default function App() {
                             <p>
                                 In this example, in addition to the static obstacles shown as grey
                                 circles, other entities are also treated as obstacles.</p>
-                            <SimulationComponent key='avoid' sim={new SteeringAvoid({avoidEntities: true})}/>
+                            <SimulationComponent key='avoid' sim={new SteeringAvoid({ avoidEntities: true })} />
                         </div>
                     </Route>
                     <Route path='/seek-avoid'>
@@ -273,7 +273,7 @@ export default function App() {
                             <p>
                                 Entities use a <b>SeekBehavior</b> to reach the exit and an
                                 <b>AvoidBehavior</b> to avoid walls and other entities.</p>
-                            <SimulationComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()}/>
+                            <SimulationComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()} />
                         </div>
                     </Route>
                     <Route path='/network'>
@@ -287,7 +287,7 @@ export default function App() {
                             <p>
                                 Entities traverse the paths using a <b>NetworkSeekBehavior</b>
                                 and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
-                            <SimulationComponent key='network' sim={new NetworkSteering()}/>
+                            <SimulationComponent key='network' sim={new NetworkSteering()} />
                         </div>
                     </Route>
 
@@ -320,12 +320,12 @@ function Home() {
             <li>
                 <b>GPSS</b>: These samples are inspired by the set of{' '}
                 <a href="http://www.minutemansoftware.com/tutorial/tutorial_manual.htm">GPSS samples</a>{' '}
-                published by Minuteman software.<br/>
+                published by Minuteman software.<br />
                 They show how you can use SimScript to simulate a wide range of practical
                 applications and allow you to compare results obtained by GPSS and SimScript.</li>
             <li>
                 <b>Steering</b>: These samples are inspired by the article{' '}
-                <a href='http://www.red3d.com/cwr/steer/'>Steering Behaviors For Autonomous Characters</a>.<br/>
+                <a href='http://www.red3d.com/cwr/steer/'>Steering Behaviors For Autonomous Characters</a>.<br />
                 They present solutions for a common requirement of autonomous characters
                 in simulations and games: the ability to navigate around their world
                 in a life-like and improvisational manner.</li>

@@ -10,5 +10,6 @@ render simulations with custom handling for simulation parameters,
 custom output, and animations.
 
 - Steering samples parameters/animations (svg)
-- simscript => Simulation.stop(reset)
-- publish
+- release simscript 35
+- Simulation.stop(true)
+
