@@ -14,6 +14,7 @@ import { OrderPoint, OrderPointComponent } from './simulations/gpss/order-point'
 import { Textile, TextileComponent } from './simulations/gpss/textile';
 
 // Steering samples
+import { SteeringComponent } from './simulations/steering/steering';
 import { SteeringSeek } from './simulations/steering/seek';
 import { SteeringAvoid } from './simulations/steering/avoid';
 import { SteeringLinearObstaclesSeek } from './simulations/steering/seek-avoid';
@@ -125,7 +126,10 @@ export default function App() {
                                 Simulates a crosswalk with a traffic light.</p>
                             <p>
                                 Shows how to use the <b>waitsignal</b> and <b>sendSignal</b> methods.</p>
-                            <CrosswalkComponent key='xwlk' sim={new Crosswalk()} />
+                            <CrosswalkComponent
+                                key='xwlk'
+                                sim={new Crosswalk()}
+                                animated={false} />
                         </div>
                     </Route>
                     <Route path='/xwlk-anim'>
@@ -252,7 +256,7 @@ export default function App() {
                                 They move towards the center of the animation, slow down as they
                                 approach the target, and restart from a random position when they
                                 reach the target.</p>
-                            <SimulationComponent key='seek' sim={new SteeringSeek()} />
+                            <SteeringComponent key='seek' sim={new SteeringSeek()} />
                         </div>
                     </Route>
                     <Route path='/avoid'>
@@ -264,7 +268,7 @@ export default function App() {
                             <p>
                                 In this example, in addition to the static obstacles shown as grey
                                 circles, other entities are also treated as obstacles.</p>
-                            <SimulationComponent key='avoid' sim={new SteeringAvoid({ avoidEntities: true })} />
+                            <SteeringComponent key='avoid' sim={new SteeringAvoid({ avoidEntities: true })} />
                         </div>
                     </Route>
                     <Route path='/seek-avoid'>
@@ -273,7 +277,7 @@ export default function App() {
                             <p>
                                 Entities use a <b>SeekBehavior</b> to reach the exit and an
                                 <b>AvoidBehavior</b> to avoid walls and other entities.</p>
-                            <SimulationComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()} />
+                            <SteeringComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()} />
                         </div>
                     </Route>
                     <Route path='/network'>
@@ -287,7 +291,7 @@ export default function App() {
                             <p>
                                 Entities traverse the paths using a <b>NetworkSeekBehavior</b>
                                 and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
-                            <SimulationComponent key='network' sim={new NetworkSteering()} />
+                            <SteeringComponent key='network' viewBox='-100 -50 1000 500' sim={new NetworkSteering()} />
                         </div>
                     </Route>
 

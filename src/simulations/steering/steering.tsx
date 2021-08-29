@@ -1,11 +1,99 @@
 import {
-    Simulation, SimulationState, Entity, IAnimationPosition,
-    Queue, Event, EventArgs, RandomVar, IPoint, Point, setOptions, clamp
+    Simulation, SimulationState, Entity, Queue, Event, EventArgs, RandomVar,
+    Network, IAnimationPosition, IPoint, Point, setOptions, clamp, format
 } from 'simscript';
+import { SimulationComponent, NumericParameter, BooleanParameter } from '../../simscript-react/components';
 
 const
     FAST_MODE_FRAMEDELAY = 0,
     SLOW_MODE_FRAMEDELAY = 5;
+
+/**
+ * Custom Component to show Crosswalk Simulations with 
+ * Simulation parameters and custom output.
+ */
+export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
+
+    // render parameters section
+    renderParams(): JSX.Element {
+        const sim = this.props.sim;
+        return <>
+            <h3>
+                Parameters
+            </h3>
+            <ul>
+                <li>
+                    <NumericParameter label='Entity Count' parent={this}
+                        value={sim.entityCount}
+                        min={1} max={50}
+                        change={v => sim.entityCount = v}
+                        suffix={` ${format(sim.entityCount, 0)} entities`} /></li>
+                <li>
+                    <BooleanParameter label='Slow Mode' parent={this}
+                        value={sim.slowMode}
+                        min={1} max={50}
+                        change={v => sim.slowMode = v} /></li>
+            </ul>
+        </>;
+    }
+
+    // render output section
+    renderOutput(): JSX.Element {
+        return <></>;
+    }
+
+    // render animation section
+    renderAnimation(): JSX.Element {
+        const viewBox = this.props.viewBox || '0 0 1000 500';
+        return <svg className='ss-anim steering' viewBox={viewBox}>
+                <circle className='ss-queue'></circle>
+            </svg>;
+    }
+    initializeAnimation(animHost: HTMLElement) {
+        const
+            color = 'lightgrey',
+            obstacles = (this.props.sim as any).obstacles,
+            network = (this.props.sim as any).network;
+        if (obstacles instanceof Array) {
+            obstacles.forEach(o => {
+                const p = o.position;
+                animHost.innerHTML += `<circle cx='${p.x}' cy='${p.y}' r='${o.radius}' fill='${color}'/>`;
+            });
+        }
+        if (network instanceof Network) {
+            let html = `<g stroke='lightgray' stroke-width='40' stroke-linecap='round'>`;
+            network.links.forEach(link => {
+                const
+                    p1 = link.from.position as IPoint,
+                    p2 = link.to.position as IPoint;
+                    html += `<line x1='${p1.x}' y1='${p1.y}' x2='${p2.x}' y2='${p2.y}' />`;
+            });
+            html += `</g>`;
+            animHost.innerHTML += html;
+        }
+    }
+
+    // get animation options
+    getAnimationOptions(): any {
+        const sim = this.props.sim;
+        return {
+            rotateEntities: true,
+            getEntityHtml: (e: SteeringVehicle) => `<polygon
+                stroke='black' stroke-width='4' fill='${e.color || 'black'}' opacity='0.5'
+                points='0 0, 40 0, 50 10, 40 20, 0 20'/>`
+            ,
+            updateEntityElement: (e: SteeringVehicle, element: HTMLElement) => {
+                const polygon = element.querySelector('polygon') as any;
+                if (polygon.fill !== e.color) {
+                    polygon.setAttribute('fill', e.color);
+                }
+            },
+            queues: [
+                { queue: sim.q, element: 'svg .ss-queue' }
+            ]
+        }
+    }
+}
 
 /**
  * Simulation used to show various steering behaviors.
@@ -522,8 +610,8 @@ export class SeekBehavior extends SteeringBehavior {
         }
         return false;
     }
-    onArrive() {
-        this.arrive.raise(this, EventArgs.empty);
+    onArrive(e?: EventArgs) {
+        this.arrive.raise(this, e || EventArgs.empty);
     }
 }
 

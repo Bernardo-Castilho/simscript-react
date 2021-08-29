@@ -9,7 +9,4 @@ You can extend from **SimulationComponent** to create components that
 render simulations with custom handling for simulation parameters,
 custom output, and animations.
 
-- Steering samples parameters/animations (svg)
-- release simscript 35
-- Simulation.stop(true)
-
+[Run the sample](https://bernardo-castilho.github.io/simscript/react/).

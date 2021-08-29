@@ -31,7 +31,7 @@
 
 .link-container nav {
     width: 12em;
-    max-height: 80vw;
+    max-height: 60vw;
     overflow: auto;
     padding: 0.5em .2em;
     margin: 0 1.5em 0 0;
@@ -89,6 +89,10 @@
 
 .sim-params label {
     display: block;
+}
+
+.sim-params label input {
+    margin-left: 1em;
 }
 
 .sim-output ul.multi-column {

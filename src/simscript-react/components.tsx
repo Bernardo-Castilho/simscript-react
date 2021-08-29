@@ -8,6 +8,7 @@ interface ISimulationComponentProps<T> {
     sim: T,
     showNetValues?: boolean,
     animated?: boolean,
+    viewBox?: string
 }
 export class SimulationComponent<T extends Simulation = Simulation> extends React.Component<ISimulationComponentProps<T>, any> {
     _mounted = false;
@@ -42,16 +43,16 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
         this._mounted = true;
 
         // initialize animation after mounting
-        if (this.props.animated) {
-            const
-                animRef = this._animRef.current,
-                animHost = animRef?.querySelector('.ss-anim');
-            assert(animHost != null, 'cannot find **ss-anim** element to host the animation');
-            new Animation(this.props.sim, animHost, this.getAnimationOptions());
+        if (this.props.animated !== false && this._animRef.current !== null) {
+            const animHost = this._animRef.current.querySelector('.ss-anim') as HTMLElement;
+            if (animHost !== null) {
+                new Animation(this.props.sim, animHost, this.getAnimationOptions());
+                this.initializeAnimation(animHost);
+            }
         }
     }
     componentWillUnmount() {
-        this.props.sim.stop();
+        this.props.sim.stop(true);
         this._mounted = false;
     }
 
@@ -84,13 +85,12 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
             sim = this.props.sim,
             runText = String.fromCharCode(9654) + ' Run',
             stopText = String.fromCharCode(9632) + ' Stop';
-
         return <div className='sim-cmp'>
             <div className='sim-params'>
                 {this.renderParams()}
             </div>
             <div className='sim-animation' ref={this._animRef}>
-                {this.props.animated && this.renderAnimation()}
+                {this.props.animated !== false && this.renderAnimation()}
             </div>
             <button className='btn-run' onClick={e => this.clickRun(e)}>
                 {sim.state !== SimulationState.Running ? runText : stopText}
@@ -118,7 +118,8 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
     getAnimationOptions(): any {
         return null;
     }
-
+    initializeAnimation(animHost: HTMLElement) {
+    }
 }
 
 
