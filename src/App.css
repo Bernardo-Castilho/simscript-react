@@ -43,6 +43,7 @@
     padding: 0.5em 1em;
     text-decoration: none;
     color: unset;
+    opacity: 0.6;
 }
 
 .link-container summary {
@@ -53,7 +54,7 @@
     font-size: 90%;
     background: #00a2ff29;
     border-radius: 1em 0 0 1em;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .link-container summary:hover {
@@ -70,6 +71,8 @@
 .link-container nav a:hover,
 .link-container nav a.active {
     background: #e0e0e0;
+    opacity: 1;
+    transition: opacity .5s;
 }
 
 .link-container>div {

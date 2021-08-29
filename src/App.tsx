@@ -329,7 +329,7 @@ function Home() {
                 applications and allow you to compare results obtained by GPSS and SimScript.</li>
             <li>
                 <b>Steering</b>: These samples are inspired by the article{' '}
-                <a href='http://www.red3d.com/cwr/steer/'>Steering Behaviors For Autonomous Characters</a>.<br />
+                <a href='http://www.red3d.com/cwr/steer/'>Steering Behaviors For Autonomous Characters</a>.{' '}
                 They present solutions for a common requirement of autonomous characters
                 in simulations and games: the ability to navigate around their world
                 in a life-like and improvisational manner.</li>
