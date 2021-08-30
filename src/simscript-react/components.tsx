@@ -119,6 +119,7 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
         return null;
     }
     initializeAnimation(animHost: HTMLElement) {
+        // override to initialize animation
     }
 }
 

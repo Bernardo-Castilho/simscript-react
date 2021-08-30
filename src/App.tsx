@@ -142,7 +142,7 @@ export default function App() {
                                 Shows how to use the <b>waitsignal</b> and <b>sendSignal</b> methods.</p>
                             <CrosswalkComponent
                                 key='xwlk-anim'
-                                sim={new Crosswalk({ maxTimeStep: 1, frameDelay: 20 })}
+                                sim={new Crosswalk({ slowMode: true })}
                                 animated={true} />
                         </div>
                     </Route>

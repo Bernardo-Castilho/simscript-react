@@ -19,19 +19,19 @@ export class MMCComponent extends SimulationComponent<MMC> {
             </h3>
             <ul>
                 <li>
-                    <NumericParameter label='Number of Servers: ' parent={this} value={c}
+                    <NumericParameter label='Number of Servers:' parent={this} value={c}
                         min={1} max={10}
                         change={v => sim.qService.capacity = v}
                         suffix={` ${format(c, 0)} servers`} />
                 </li>
                 <li>
-                    <NumericParameter label='Mean inter-arrival time: ' parent={this} value={sim.interArrival.mean}
+                    <NumericParameter label='Mean inter-arrival time:' parent={this} value={sim.interArrival.mean}
                         min={10} max={200}
                         change={v => sim.interArrival = new Exponential(v)}
                         suffix={` ${format(sim.interArrival.mean, 0)} ${sim.timeUnit}`} />
                 </li>
                 <li>
-                    <NumericParameter label='Mean service time: ' parent={this} value={sim.service.mean}
+                    <NumericParameter label='Mean service time:' parent={this} value={sim.service.mean}
                         min={10} max={200}
                         change={v => sim.service = new Exponential(v)}
                         suffix={` ${format(sim.service.mean, 0)} ${sim.timeUnit}`} />

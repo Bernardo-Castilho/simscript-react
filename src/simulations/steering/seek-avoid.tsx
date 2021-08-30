@@ -11,14 +11,14 @@ import {
     avoidColor = 'red';
     obstacles = [
         ...this.generateObstaclesForPath([
-            { x: -100, y: 350 },
+            { x: -100, y: 450 },
             { x: 450, y: 150 },
             { x: 450, y: -10 }
         ], 5, true),
         ...this.generateObstaclesForPath([
-            { x: 550, y: -10 },
+            { x: 1100, y: 450 },
             { x: 550, y: 150 },
-            { x: 1100, y: 350 },
+            { x: 550, y: -10 },
         ], 5, true),
     ];
 
@@ -33,7 +33,7 @@ import {
         const
             obstacles = this.obstacles.slice(), // array with obstacles used by the AvoidBehavior
             xPos = new Uniform(0, 1000), // // entity starting x position
-            yPos = new Uniform(400, 450), // entity starting y position
+            yPos = new Uniform(460, 490), // entity starting y position
             speed = new Uniform(10, 100), // entity starting speed
             angle = new Uniform(0, 360); // entity starting angle
 

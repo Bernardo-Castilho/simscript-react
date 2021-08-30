@@ -1,5 +1,5 @@
 import { Simulation, Entity, Queue, Exponential, Uniform, format, setOptions } from 'simscript';
-import { SimulationComponent, HTMLDiv, NumericParameter } from '../../simscript-react/components';
+import { SimulationComponent, HTMLDiv, NumericParameter, BooleanParameter } from '../../simscript-react/components';
 
 /**
  * Custom Component to show Crosswalk Simulations with 
@@ -19,27 +19,30 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
             </p>
             <ul>
                 <li>
-                    <NumericParameter label='<span class="light red"></span>Red: ' parent={this}
+                    <NumericParameter label='<span class="light red"></span>Red:' parent={this}
                         value={sim.cycle.red}
                         min={0} max={120}
                         change={v => sim.cycle.red = v}
                         suffix={` ${format(sim.cycle.red, 0)} ${sim.timeUnit}`} />
                 </li>
                 <li>
-                    <NumericParameter label='<span class="light yellow"></span>Yellow: ' parent={this}
+                    <NumericParameter label='<span class="light yellow"></span>Yellow:' parent={this}
                         value={sim.cycle.yellow}
                         min={0} max={120}
                         change={v => sim.cycle.yellow = v}
                         suffix={` ${format(sim.cycle.yellow, 0)} ${sim.timeUnit}`} />
                 </li>
                 <li>
-                    <NumericParameter label='<span class="light green"></span>Green: ' parent={this}
+                    <NumericParameter label='<span class="light green"></span>Green:' parent={this}
                         value={sim.cycle.green}
                         min={0} max={120}
                         change={v => sim.cycle.green = v}
                         suffix={` ${format(sim.cycle.green, 0)} ${sim.timeUnit}`} />
                 </li>
             </ul>
+            <BooleanParameter label='Slow Mode:' parent={this}
+                value={sim.slowMode}
+                change={v => sim.slowMode = v} />
         </>;
     }
 
@@ -146,6 +149,21 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
             ]
         };
     }
+
+    // update traffic lights
+    initializeAnimation(animHost: HTMLElement): void {
+        const
+            sim = this.props.sim,
+            lights = animHost.querySelectorAll('.light circle'),
+            updateStats = () => {
+                for (let i = 0; i < lights.length; i++) {
+                    (lights[i] as HTMLElement).style.opacity = (i === sim.light) ? '1' : '';
+                }
+            };
+        sim.timeNowChanged.addEventListener(updateStats);
+        sim.stateChanged.addEventListener(updateStats);
+
+    }
 }
     
 /**
@@ -184,6 +202,8 @@ export class Crosswalk extends Simulation {
     };
     light = Signal.RED;
 
+    _slowMode = false;
+
     // initialize Simulation
     constructor(options?: any) {
         super();
@@ -191,9 +211,7 @@ export class Crosswalk extends Simulation {
         this.timeUnit = 's';
         this.qPedXing.grossPop.setHistogramParameters(3);
         this.qCarXing.grossPop.setHistogramParameters(2);
-        if (this.timeEnd == null) {
-            this.timeEnd = 3600 * 24; // 24 hours
-        }
+        this.timeEnd = 3600 * 24; // 24 hours
         setOptions(this, options);
     }
 
@@ -203,6 +221,21 @@ export class Crosswalk extends Simulation {
         this.activate(new TrafficLight());
         this.generateEntities(Pedestrian, this.pedestrianArrivalInterval);
         this.generateEntities(Car, this.carArrivalInterval);
+    }
+
+    // toggle simulation speed
+    get slowMode(): boolean {
+        return this._slowMode;
+    }
+    set slowMode(value: boolean) {
+        this._slowMode = value;
+        if (value) {
+            this.maxTimeStep = 1;
+            this.frameDelay = 30;
+        } else {
+            this.maxTimeStep = 0;
+            this.frameDelay = 0;
+        }
     }
 }
 

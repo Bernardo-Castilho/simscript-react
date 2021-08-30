@@ -23,13 +23,13 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
             </h3>
             <ul>
                 <li>
-                    <NumericParameter label='Entity Count' parent={this}
+                    <NumericParameter label='Entity Count:' parent={this}
                         value={sim.entityCount}
                         min={1} max={50}
                         change={v => sim.entityCount = v}
                         suffix={` ${format(sim.entityCount, 0)} entities`} /></li>
                 <li>
-                    <BooleanParameter label='Slow Mode' parent={this}
+                    <BooleanParameter label='Slow Mode:' parent={this}
                         value={sim.slowMode}
                         min={1} max={50}
                         change={v => sim.slowMode = v} /></li>

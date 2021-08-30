@@ -1,6 +1,7 @@
 /* to position h1 elements in each page */
 #root {
     position: relative;
+    min-width: 40em;
 }
 
 #root > h1 {
@@ -31,7 +32,7 @@
 
 .link-container nav {
     width: 12em;
-    max-height: 60vw;
+    max-height: 30em;
     overflow: auto;
     padding: 0.5em .2em;
     margin: 0 1.5em 0 0;
