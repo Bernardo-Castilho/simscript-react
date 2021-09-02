@@ -29,7 +29,7 @@ import {
 
     onStarting(e?: EventArgs) {
         super.onStarting(e);
-
+        
         const
             obstacles = this.obstacles.slice(), // array with obstacles used by the AvoidBehavior
             xPos = new Uniform(0, 1000), // // entity starting x position

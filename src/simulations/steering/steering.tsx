@@ -48,7 +48,7 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
 
             // get viewpoint
             const viewpoint = this.props.viewPoint || `<viewpoint
-                position='500 -500 600'
+                position='500 -200 400'
                 orientation='1 0 0 .8'
                 centerOfRotation='0 0 -20'>
             </viewpoint>`;
@@ -136,14 +136,6 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
             network = (this.props.sim as any).network;
         
         if (this.props.animated === 'x3d') {
-
-            // reload x3dom to make sure animation is visible
-            const x3dom = window['x3dom' as any] as any;
-            if (x3dom != null) {
-                requestAnimationFrame(() => {
-                    x3dom.reload();
-                });
-            }
 
             // initialize X3DOM animation element
             const
@@ -699,8 +691,10 @@ export class BounceBehavior extends SteeringBehavior {
             const p = e.position;
             if (p.x < bounds[0].x || p.x > bounds[1].x) {
                 e.angle = 180 - e.angle;
+                p.x = p.x < bounds[0].x ? bounds[0].x : bounds[1].x;
             } else if (p.y < bounds[0].y || p.y > bounds[1].y) {
                 e.angle = -e.angle;
+                p.y = p.y < bounds[0].y ? bounds[0].y : bounds[1].y;
             }
         }
         return false;

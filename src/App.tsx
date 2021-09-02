@@ -282,7 +282,7 @@ export default function App() {
                         <div>
                             <h1>Seek and Avoid Simulation</h1>
                             <p>
-                                Entities use a <b>SeekBehavior</b> to reach the exit and an
+                                Entities use a <b>SeekBehavior</b> to reach the exit and an{' '}
                                 <b>AvoidBehavior</b> to avoid walls and other entities.</p>
                             <SteeringComponent key='seek-avoid' sim={new SteeringLinearObstaclesSeek()} />
                         </div>
@@ -296,7 +296,7 @@ export default function App() {
                                 The sample creates a network and uses it to create paths for
                                 the entities.</p>
                             <p>
-                                Entities traverse the paths using a <b>NetworkSeekBehavior</b>
+                                Entities traverse the paths using a <b>NetworkSeekBehavior</b>{' '}
                                 and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
                             <SteeringComponent
                                 key='network'
@@ -341,7 +341,7 @@ export default function App() {
                         <div>
                             <h1>Seek and Avoid Simulation</h1>
                             <p>
-                                Entities use a <b>SeekBehavior</b> to reach the exit and an
+                                Entities use a <b>SeekBehavior</b> to reach the exit and an{' '}
                                 <b>AvoidBehavior</b> to avoid walls and other entities.</p>
                             <SteeringComponent
                                 key='seek-avoid'
@@ -364,7 +364,12 @@ export default function App() {
                                 key='network'
                                 sim={new NetworkSteering()}
                                 animated='x3d'
-                                viewPoint='<viewpoint position="400 -80 585" orientation="1 0 0 0.4" centerOfRotation="0 0 -20" />'
+                                viewPoint={
+                                    `<viewpoint
+                                        position="400 -80 585"
+                                        orientation="1 0 0 0.4"
+                                        centerOfRotation="0 0 -20">
+                                    </viewpoint>`}
                             />
                         </div>
                     </Route>
