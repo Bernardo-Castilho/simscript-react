@@ -42,7 +42,7 @@ export default function App() {
                     <nav>
                         <MyLink to='/'>Home</MyLink>
                         <details open={true}>
-                            <summary>SimScript samples</summary>
+                            <summary>SimScript</summary>
                             <MyLink to='/bshop'>Barbershop</MyLink>
                             <MyLink to='/mmc'>M/M/C (default)</MyLink>
                             <MyLink to='/mmc-cst'>M/M/C (custom)</MyLink>
@@ -50,18 +50,25 @@ export default function App() {
                             <MyLink to='/xwlk-anim'>Crosswalk (animated)</MyLink>
                         </details>
                         <details>
-                            <summary>GPSS samples</summary>
+                            <summary>GPSS</summary>
                             <MyLink to='/phone'>Telephone System</MyLink>
                             <MyLink to='/tv'>TV Repair Shop</MyLink>
                             <MyLink to='/order'>Order Point</MyLink>
                             <MyLink to='/textile'>Textile Factory</MyLink>
                         </details>
                         <details>
-                            <summary>Steering samples</summary>
+                            <summary>Steering (SVG)</summary>
                             <MyLink to='/seek'>Seek</MyLink>
                             <MyLink to='/avoid'>Avoid</MyLink>
                             <MyLink to='/seek-avoid'>Seek and Avoid</MyLink>
                             <MyLink to='/network'>Network</MyLink>
+                        </details>
+                        <details>
+                            <summary>Steering (X3DOM)</summary>
+                            <MyLink to='/seek-x3d'>Seek</MyLink>
+                            <MyLink to='/avoid-x3d'>Avoid</MyLink>
+                            <MyLink to='/seek-avoid-x3d'>Seek and Avoid</MyLink>
+                            <MyLink to='/network-x3d'>Network</MyLink>
                         </details>
                     </nav>
                 </div>
@@ -143,7 +150,7 @@ export default function App() {
                             <CrosswalkComponent
                                 key='xwlk-anim'
                                 sim={new Crosswalk({ slowMode: true })}
-                                animated={true} />
+                                animated='svg' />
                         </div>
                     </Route>
 
@@ -246,7 +253,7 @@ export default function App() {
                         </div>
                     </Route>
 
-                    {/* Steering samples */}
+                    {/* Steering samples (SVG) */}
                     <Route path='/seek'>
                         <div>
                             <h1>Seek Simulation</h1>
@@ -291,7 +298,74 @@ export default function App() {
                             <p>
                                 Entities traverse the paths using a <b>NetworkSeekBehavior</b>
                                 and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
-                            <SteeringComponent key='network' viewBox='-100 -50 1000 500' sim={new NetworkSteering()} />
+                            <SteeringComponent
+                                key='network'
+                                sim={new NetworkSteering()}
+                                animated='svg'
+                                viewBox='-100 -50 1000 500' />
+                        </div>
+                    </Route>
+
+                    {/* Steering samples (X3DOM) */}
+                    <Route path='/seek-x3d'>
+                        <div>
+                            <h1>Seek Simulation</h1>
+                            <p>
+                                This sample shows entities that implement a <b>SeekBehavior</b>.</p>
+                            <p>
+                                They move towards the center of the animation, slow down as they
+                                approach the target, and restart from a random position when they
+                                reach the target.</p>
+                            <SteeringComponent
+                                key='seek'
+                                sim={new SteeringSeek()}
+                                animated='x3d' />
+                        </div>
+                    </Route>
+                    <Route path='/avoid-x3d'>
+                        <div>
+                            <h1>Avoid Simulation</h1>
+                            <p>
+                                Shows how to implement an <b>AvoidBehavior</b> that causes entities
+                                to avoid obstacles.</p>
+                            <p>
+                                In this example, in addition to the static obstacles shown as grey
+                                circles, other entities are also treated as obstacles.</p>
+                            <SteeringComponent
+                                key='avoid'
+                                sim={new SteeringAvoid({ avoidEntities: true })}
+                                animated='x3d' />
+                        </div>
+                    </Route>
+                    <Route path='/seek-avoid-x3d'>
+                        <div>
+                            <h1>Seek and Avoid Simulation</h1>
+                            <p>
+                                Entities use a <b>SeekBehavior</b> to reach the exit and an
+                                <b>AvoidBehavior</b> to avoid walls and other entities.</p>
+                            <SteeringComponent
+                                key='seek-avoid'
+                                sim={new SteeringLinearObstaclesSeek()}
+                                animated='x3d' />
+                        </div>
+                    </Route>
+                    <Route path='/network-x3d'>
+                        <div>
+                            <h1>Network Steering Simulation</h1>
+                            <p>
+                                Shows how you can use steering behaviors with networks.</p>
+                            <p>
+                                The sample creates a network and uses it to create paths for
+                                the entities.</p>
+                            <p>
+                                Entities traverse the paths using a <b>NetworkSeekBehavior</b>
+                                and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
+                            <SteeringComponent
+                                key='network'
+                                sim={new NetworkSteering()}
+                                animated='x3d'
+                                viewPoint='<viewpoint position="400 -80 585" orientation="1 0 0 0.4" centerOfRotation="0 0 -20" />'
+                            />
                         </div>
                     </Route>
 

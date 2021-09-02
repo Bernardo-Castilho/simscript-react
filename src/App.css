@@ -22,6 +22,10 @@
     display: flex;
 }
 
+.link-container>div {
+    flex-grow: 1;
+}
+
 .link-container * {
     white-space: nowrap;
 }
@@ -67,19 +71,7 @@
     padding-left: 1.5em;
 }
 
-
-.sim-cmp button.btn-run:hover,
-.link-container nav a:hover,
-.link-container nav a.active {
-    background: #e0e0e0;
-    opacity: 1;
-    transition: opacity .5s;
-}
-
-.link-container>div {
-    flex-grow: 1;
-}
-
+/* run button */
 .sim-cmp button.btn-run {
     padding: .5em 1em;
     margin: 1em 0;
@@ -89,6 +81,24 @@
     border: 1px solid #c0c0c0;
     background: #f0f0f0;
     font-size: 125%;
+}
+
+.sim-cmp button.btn-run:hover,
+.link-container nav a:hover,
+.link-container nav a.active {
+    background: #e0e0e0;
+    opacity: 1;
+    transition: opacity .5s;
+}
+
+/* simulation charts */
+svg.ss-chart {
+    margin-bottom: 1em;
+}
+
+/* simulation parameters */
+.sim-params {
+    margin-bottom: 1em;
 }
 
 .sim-params label {

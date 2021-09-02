@@ -7,9 +7,11 @@ import { Simulation, SimulationState, Animation, assert } from 'simscript';
 interface ISimulationComponentProps<T> {
     sim: T,
     showNetValues?: boolean,
-    animated?: boolean,
-    viewBox?: string
+    animated?: boolean | string,
+    viewBox?: string,
+    viewPoint?: string
 }
+
 export class SimulationComponent<T extends Simulation = Simulation> extends React.Component<ISimulationComponentProps<T>, any> {
     _mounted = false;
     _lastUpdate = 0;
@@ -84,13 +86,14 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
         const
             sim = this.props.sim,
             runText = String.fromCharCode(9654) + ' Run',
-            stopText = String.fromCharCode(9632) + ' Stop';
+            stopText = String.fromCharCode(9632) + ' Stop',
+            animHtml = this.getAnimationHostHtml();
         return <div className='sim-cmp'>
             <div className='sim-params'>
                 {this.renderParams()}
             </div>
             <div className='sim-animation' ref={this._animRef}>
-                {this.props.animated !== false && this.renderAnimation()}
+                {this.props.animated !== false && animHtml != null && <HTMLDiv html={animHtml} />}
             </div>
             <button className='btn-run' onClick={e => this.clickRun(e)}>
                 {sim.state !== SimulationState.Running ? runText : stopText}
@@ -111,8 +114,8 @@ export class SimulationComponent<T extends Simulation = Simulation> extends Reac
         return <HTMLDiv html={this.props.sim.getStatsTable(this.props.showNetValues)} />
     }
 
-    // no anumation by default
-    renderAnimation(): JSX.Element | null {
+    // no animation by default
+    getAnimationHostHtml(): string | null{
         return null;
     }
     getAnimationOptions(): any {

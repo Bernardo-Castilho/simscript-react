@@ -92,27 +92,27 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
     }
 
     // render animation section
-    renderAnimation(): JSX.Element {
-        return <svg className='ss-anim' viewBox='0 0 1000 500'>
-            <g className='light'>
-                <rect className='light' x='47.5%' y='0%' width='5%' height='25%' rx='2%'/>
-                <circle className='red' cx='50%' cy='5%' r='2%'/>
-                <circle className='yellow' cx='50%' cy='12.5%' r='2%'/>
-                <circle className='green' cx='50%' cy='20%' r='2%'/>
+    getAnimationHostHtml(): string {
+        return `<svg class='ss-anim' viewbox='0 0 1000 500'>
+            <g class='light'>
+                <rect class='light' x='47.5%' y='0%' width='5%' height='25%' rx='2%'/>
+                <circle class='red' cx='50%' cy='5%' r='2%'/>
+                <circle class='yellow' cx='50%' cy='12.5%' r='2%'/>
+                <circle class='green' cx='50%' cy='20%' r='2%'/>
             </g>
 
-            <rect className='street' x='10%' y='50%' width='80%' height='20%'/>
-            <rect className='crosswalk' x='45%' y='50%' width='10%' height='20%'/>
+            <rect class='street' x='10%' y='50%' width='80%' height='20%'/>
+            <rect class='crosswalk' x='45%' y='50%' width='10%' height='20%'/>
 
-            <circle className='ss-queue car-arr' cx='10%' cy='60%' r='10'/>
-            <circle className='ss-queue car-xing' cx='40%' cy='60%' r='10'/>
-            <circle className='ss-queue car-xed' cx='90%' cy='60%' r='10'/>
+            <circle class='ss-queue car-arr' cx='10%' cy='60%' r='10'/>
+            <circle class='ss-queue car-xing' cx='40%' cy='60%' r='10'/>
+            <circle class='ss-queue car-xed' cx='90%' cy='60%' r='10'/>
 
-            <circle className='ss-queue ped-arr' cx='10%' cy='85%' r='10'/>
-            <circle className='ss-queue ped-xing' cx='50%' cy='75%' r='10'/>
-            <circle className='ss-queue ped-xed' cx='50%' cy='45%' r='10'/>
-            <circle className='ss-queue ped-leave' cx='90%' cy='35%' r='10'/>
-        </svg>
+            <circle class='ss-queue ped-arr' cx='10%' cy='85%' r='10'/>
+            <circle class='ss-queue ped-xing' cx='50%' cy='75%' r='10'/>
+            <circle class='ss-queue ped-xed' cx='50%' cy='45%' r='10'/>
+            <circle class='ss-queue ped-leave' cx='90%' cy='35%' r='10'/>
+        </svg>`;
     }
 
     // get animation options

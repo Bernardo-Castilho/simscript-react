@@ -1,6 +1,6 @@
 import {
     Simulation, SimulationState, Entity, Queue, Event, EventArgs, RandomVar,
-    Network, IAnimationPosition, IPoint, Point, setOptions, clamp, format
+    Network, IAnimationPosition, IPoint, ILink, Point, setOptions, clamp, format
 } from 'simscript';
 import { SimulationComponent, NumericParameter, BooleanParameter } from '../../simscript-react/components';
 
@@ -42,56 +42,244 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
         return <></>;
     }
 
-    // render animation section
-    renderAnimation(): JSX.Element {
-        const viewBox = this.props.viewBox || '0 0 1000 500';
-        return <svg className='ss-anim steering' viewBox={viewBox}>
-                <circle className='ss-queue'></circle>
-            </svg>;
-    }
-    initializeAnimation(animHost: HTMLElement) {
-        const
-            color = 'lightgrey',
-            obstacles = (this.props.sim as any).obstacles,
-            network = (this.props.sim as any).network;
-        if (obstacles instanceof Array) {
-            obstacles.forEach(o => {
-                const p = o.position;
-                animHost.innerHTML += `<circle cx='${p.x}' cy='${p.y}' r='${o.radius}' fill='${color}'/>`;
-            });
-        }
-        if (network instanceof Network) {
-            let html = `<g stroke='lightgray' stroke-width='40' stroke-linecap='round'>`;
-            network.links.forEach(link => {
-                const
-                    p1 = link.from.position as IPoint,
-                    p2 = link.to.position as IPoint;
-                    html += `<line x1='${p1.x}' y1='${p1.y}' x2='${p2.x}' y2='${p2.y}' />`;
-            });
-            html += `</g>`;
-            animHost.innerHTML += html;
+    // render animation section (X3DOM or SVG)
+    getAnimationHostHtml(): string {
+        if (this.props.animated === 'x3d') {
+
+            // get viewpoint
+            const viewpoint = this.props.viewPoint || `<viewpoint
+                position='500 -500 600'
+                orientation='1 0 0 .8'
+                centerOfRotation='0 0 -20'>
+            </viewpoint>`;
+
+            // render X3DOM animation element
+            return `<x3d class='ss-anim steering'>
+                <scene>
+                    ${viewpoint}
+                    <transform scale='1000 500 .1' translation='500 250 -0.5'>
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='0.1 0.3 0.1' transparency='0.8'></material>
+                            </appearance>
+                            <box />
+                        </shape>
+                    </transform>
+                    ${this.createX3Queue('q', 0, 0)}
+                </scene>
+            </x3d>`;
+            
+        } else {
+            
+            // render SVG animation element
+            const viewBox = this.props.viewBox || '0 0 1000 500';
+            return `<svg class='ss-anim steering' viewbox='${viewBox}'>
+                <circle class='ss-queue'></circle>
+            </svg>`;
         }
     }
 
-    // get animation options
+    // get animation options (X3DOM or SVG)
     getAnimationOptions(): any {
         const sim = this.props.sim;
-        return {
-            rotateEntities: true,
-            getEntityHtml: (e: SteeringVehicle) => `<polygon
-                stroke='black' stroke-width='4' fill='${e.color || 'black'}' opacity='0.5'
-                points='0 0, 40 0, 50 10, 40 20, 0 20'/>`
-            ,
-            updateEntityElement: (e: SteeringVehicle, element: HTMLElement) => {
-                const polygon = element.querySelector('polygon') as any;
-                if (polygon.fill !== e.color) {
-                    polygon.setAttribute('fill', e.color);
-                }
-            },
-            queues: [
-                { queue: sim.q, element: 'svg .ss-queue' }
-            ]
+        if (this.props.animated === 'x3d') {
+
+            // get X3DOM animation options
+            const carColors: any = {
+                red: [1, 0, 0],
+                orange: [1, 1, 0],
+                green: [0, 1, 0]
+            };
+            return {
+                rotateEntities: true,
+                getEntityHtml: (e: SteeringVehicle) => this.createX3Car('car', 40, 20, 10, carColors[e.color] || [0, 0, 0]),
+                updateEntityElement: (e: SteeringVehicle, element: HTMLElement) => {
+                    const
+                        material = element.querySelector('material') as HTMLElement,
+                        colorAttr = 'diffuseColor',
+                        clrNow = material.getAttribute(colorAttr),
+                        clrNext = (carColors[e.color] || [0, 0, 0]).toString();
+                    if (clrNext !== clrNow) {
+                        material.setAttribute(colorAttr, clrNext);
+                    }
+                },
+                queues: [
+                    { queue: sim.q, element: 'x3d .ss-queue' }
+                ]
+            }
+        } else {
+            
+            // get SVG animation options
+            return {
+                rotateEntities: true,
+                getEntityHtml: (e: SteeringVehicle) => `<polygon
+                    stroke='black' stroke-width='4' fill='${e.color || 'black'}' opacity='0.5'
+                    points='0 0, 40 0, 50 10, 40 20, 0 20'/>`
+                ,
+                updateEntityElement: (e: SteeringVehicle, element: HTMLElement) => {
+                    const polygon = element.querySelector('polygon') as any;
+                    if (polygon.fill !== e.color) {
+                        polygon.setAttribute('fill', e.color);
+                    }
+                },
+                queues: [
+                    { queue: sim.q, element: 'svg .ss-queue' }
+                ]
+            }
         }
+    }
+
+    // initialize animation (X3DOM or SVG)
+    initializeAnimation(animHost: HTMLElement) {
+        const
+            obstacles = (this.props.sim as any).obstacles,
+            network = (this.props.sim as any).network;
+        
+        if (this.props.animated === 'x3d') {
+
+            // reload x3dom to make sure animation is visible
+            const x3dom = window['x3dom' as any] as any;
+            if (x3dom != null) {
+                requestAnimationFrame(() => {
+                    x3dom.reload();
+                });
+            }
+
+            // initialize X3DOM animation element
+            const
+                height = 30,
+                color = '.5 .5 0';
+            if (obstacles instanceof Array) {
+
+                // show obstacles
+                obstacles.forEach(o => {
+                    (animHost.firstElementChild as HTMLElement).innerHTML += `
+                    <transform rotation='1 0 0 1.57' translation='${o.position.x} ${o.position.y} ${height / 2}'>
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='${color}'/>
+                            </appearance>
+                            <cylinder height=${height} radius='${o.radius}'/>
+                        </shape>
+                    </transform>`;
+                });
+            }
+            if (network != null) {
+
+                // show network
+                this.renderNetworkX3D(network, animHost, false, true);
+            }
+    
+        } else {
+
+            // initialize SVG animation element
+            const color = 'lightgrey';
+            if (obstacles instanceof Array) {
+                obstacles.forEach(o => {
+                    const p = o.position;
+                    animHost.innerHTML += `<circle cx='${p.x}' cy='${p.y}' r='${o.radius}' fill='${color}'/>`;
+                });
+            }
+            if (network instanceof Network) {
+                let html = `<g stroke='lightgray' stroke-width='40' stroke-linecap='round'>`;
+                network.links.forEach(link => {
+                    const
+                        p1 = link.from.position as IPoint,
+                        p2 = link.to.position as IPoint;
+                    html += `<line x1='${p1.x}' y1='${p1.y}' x2='${p2.x}' y2='${p2.y}' />`;
+                });
+                html += `</g>`;
+                animHost.innerHTML += html;
+            }
+        }
+    }
+
+    // X3DOM utilities
+    createX3Queue(name: string, x: number, y: number, z = 0): string {
+        return `<transform class='ss-queue ${name}' translation='${x} ${y} ${z}'>
+            <shape>
+                <appearance>
+                    <material diffuseColor='1 1 0' transparency='0.6'></material>
+                </appearance>
+                <sphere radius='4'></sphere>
+            </shape>
+        </transform>`;
+    }
+    createX3Car(name: string, w: number, h: number, d: number, rgb: number[]): string {
+        return `<transform class='ss-car ${name}' translation='0 0 ${h / 2}'>
+            <transform>
+                <shape> <!-- body -->
+                    <appearance>
+                        <material diffuseColor='${rgb[0]} ${rgb[1]} ${rgb[2]}'></material>
+                    </appearance>
+                    <box size='${w} ${h} ${d}'></box>
+                </shape>
+                <shape render='false'> <!-- 5 unit padding -->
+                    <box size='${w * 1.1} ${h * 1.1} ${d * 1.1}'></box>
+                </shape>
+            </transform>
+            <transform translation='${-w * .2} 0 ${+d * .5}'>
+                <shape> <!-- cabin -->
+                    <appearance>
+                        <material diffuseColor='${rgb[0] / 3} ${rgb[1] / 3} ${rgb[2] / 3}'></material>
+                    </appearance>
+                    <box size='${w * .5} ${h * .75} ${d}'></box>
+                </shape>
+            </transform>
+            <transform translation='${-w / 2 + 4} 0 -2'>
+                <shape> <!-- front wheels -->
+                    <appearance>
+                        <material diffuseColor='0 0 0'></material>
+                    </appearance>
+                    <cylinder radius='3' height='${h + 2}'></cylinder>
+                </shape>
+            </transform>
+            <transform translation='${+w / 2 - 4} 0 -2'>
+                <shape> <!-- rear wheels -->
+                    <appearance>
+                        <material diffuseColor='0 0 0'></material>
+                    </appearance>
+                    <cylinder radius='3' height='${h + 2}'></cylinder>
+                </shape>
+            </transform>
+        </transform>`;
+    }
+    renderNetworkX3D(network: Network, x3d: HTMLElement, nodes = true, links = true) {
+        let html = '';
+        if (nodes) {
+            network.nodes.forEach(nd => {
+                const pos = nd.position as IPoint;
+                html += `<transform class='ss-queue q${nd.id}' translation='${pos.x} ${pos.y} 0'>
+                    <shape>
+                        <appearance>
+                            <material transparency='0.5' diffuseColor='1 1 0'/>
+                        </appearance>
+                        <box size='5 5 2'></box>
+                    </shape>
+                </transform>`;
+            });
+        }
+        if (links) {
+            network.links.forEach((link: ILink, index: number) => {
+                if (index % 2 === 0) {
+                    const from = link.from.position as IPoint;
+                    const to = link.to.position as IPoint;
+                    const len = Point.distance(from, to);
+                    html += `<transform translation='${from.x} ${from.y} 0' rotation='0 0 1 ${Point.angle(from, to, true)}'>
+                        <transform translation='${len / 2} 0 0'>
+                            <shape>
+                                <appearance>
+                                    <material transparency='0' diffuseColor='.1 .1 .1'/>
+                                </appearance>
+                                <box size='${len + 30} 50 1'></box>
+                            </shape>
+                        </transform>
+                    </transform>`;
+                }
+            });
+        }
+        const scene = x3d.querySelector('scene') as HTMLElement;
+        scene.innerHTML += html;
     }
 }
 
