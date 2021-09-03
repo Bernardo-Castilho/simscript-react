@@ -144,9 +144,10 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
             if (obstacles instanceof Array) {
 
                 // show obstacles
+                const scene = animHost.firstElementChild as HTMLElement;
+                let html = scene.innerHTML;
                 obstacles.forEach(o => {
-                    (animHost.firstElementChild as HTMLElement).innerHTML += `
-                    <transform rotation='1 0 0 1.57' translation='${o.position.x} ${o.position.y} ${height / 2}'>
+                    html += `<transform rotation='1 0 0 1.57' translation='${o.position.x} ${o.position.y} ${height / 2}'>
                         <shape>
                             <appearance>
                                 <material diffuseColor='${color}'/>
@@ -155,6 +156,7 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
                         </shape>
                     </transform>`;
                 });
+                scene.innerHTML = html;
             }
             if (network != null) {
 
@@ -688,13 +690,19 @@ export class BounceBehavior extends SteeringBehavior {
     applyBehavior(e: SteeringVehicle, dt: number): boolean {
         const bounds = e.simulation.bounds;
         if (bounds) {
-            const p = e.position;
-            if (p.x < bounds[0].x || p.x > bounds[1].x) {
+            const
+                p = e.position,
+                r = e.radius,
+                xMin = bounds[0].x + r,
+                xMax = bounds[1].x - r,
+                yMin = bounds[0].y + r,
+                yMax = bounds[1].y - r;
+            if (p.x < xMin || p.x > xMax) {
                 e.angle = 180 - e.angle;
-                p.x = p.x < bounds[0].x ? bounds[0].x : bounds[1].x;
-            } else if (p.y < bounds[0].y || p.y > bounds[1].y) {
+                p.x = p.x < xMin ? xMin : xMax;
+            } else if (p.y < yMin || p.y > yMax) {
                 e.angle = -e.angle;
-                p.y = p.y < bounds[0].y ? bounds[0].y : bounds[1].y;
+                p.y = p.y < yMin ? yMin : yMax;
             }
         }
         return false;
