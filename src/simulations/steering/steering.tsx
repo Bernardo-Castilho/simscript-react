@@ -169,10 +169,12 @@ export class SteeringComponent extends SimulationComponent<SteeringBehaviors> {
             // initialize SVG animation element
             const color = 'lightgrey';
             if (obstacles instanceof Array) {
+                let html = animHost.innerHTML;
                 obstacles.forEach(o => {
                     const p = o.position;
-                    animHost.innerHTML += `<circle cx='${p.x}' cy='${p.y}' r='${o.radius}' fill='${color}'/>`;
+                    html += `<circle cx='${p.x}' cy='${p.y}' r='${o.radius}' fill='${color}'/>`;
                 });
+                animHost.innerHTML = html;
             }
             if (network instanceof Network) {
                 let html = `<g stroke='lightgray' stroke-width='40' stroke-linecap='round'>`;
