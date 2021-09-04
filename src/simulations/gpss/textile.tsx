@@ -24,8 +24,8 @@ export class TextileComponent extends SimulationComponent<Textile> {
                 The utilization of the machines was:</p>
             <ul>
                 <li>Reducers: <b>{format(sim.qReducers.utilization * 100, 0)}</b>%</li>
-                <li>Spinners: <b>{format(sim.qReducers.utilization * 100, 0)}</b>%</li>
-                <li>Winders: <b>{format(sim.qReducers.utilization * 100, 0)}</b>%</li>
+                <li>Spinners: <b>{format(sim.qSpinners.utilization * 100, 0)}</b>%</li>
+                <li>Winders: <b>{format(sim.qWinders.utilization * 100, 0)}</b>%</li>
             </ul>
         </>;
     }

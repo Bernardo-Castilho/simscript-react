@@ -86,10 +86,10 @@ export default function App() {
                                 BarberShop Simulation</h1>
                             <p>
                                 A <a href='https://try-mts.com/gpss-introduction-and-barber-shop-simulation/'>
-                                    classic GPSS simulation example</a>:
+                                classic GPSS simulation example</a>:
                                 customers arrive at a barbershop, wait until the barber is available,
                                 get serviced, and leave.</p>
-                            <SimulationComponent key={'bshop'} sim={new BarberShop()} />
+                            <SimulationComponent key='bshop' sim={new BarberShop()} />
                         </div>
                     </Route>
                     <Route path='/mmc'>
@@ -98,7 +98,7 @@ export default function App() {
                                 M/M/C Simulation (default)</h1>
                             <p>
                                 A <a href='https://en.wikipedia.org/wiki/M/M/c_queue'>
-                                    classic M/M/C queueing system</a>.
+                                classic M/M/C queueing system</a>:
                                 Entities arrive, are served by one of C servers, and leave.</p>
                             <p>
                                 This version shows the standard <b>SimScript</b> output table.</p>
@@ -317,7 +317,7 @@ export default function App() {
                                 approach the target, and restart from a random position when they
                                 reach the target.</p>
                             <SteeringComponent
-                                key='seek'
+                                key='seek-x3d'
                                 sim={new SteeringSeek()}
                                 animated='x3d' />
                         </div>
@@ -332,7 +332,7 @@ export default function App() {
                                 In this example, in addition to the static obstacles shown as grey
                                 circles, other entities are also treated as obstacles.</p>
                             <SteeringComponent
-                                key='avoid'
+                                key='avoid-x3d'
                                 sim={new SteeringAvoid({ avoidEntities: true })}
                                 animated='x3d' />
                         </div>
@@ -344,7 +344,7 @@ export default function App() {
                                 Entities use a <b>SeekBehavior</b> to reach the exit and an{' '}
                                 <b>AvoidBehavior</b> to avoid walls and other entities.</p>
                             <SteeringComponent
-                                key='seek-avoid'
+                                key='seek-avoid-x3d'
                                 sim={new SteeringLinearObstaclesSeek()}
                                 animated='x3d' />
                         </div>
@@ -361,7 +361,7 @@ export default function App() {
                                 Entities traverse the paths using a <b>NetworkSeekBehavior</b>
                                 and avoid other entities using a <b>NetworkAvoidBehavior</b>.</p>
                             <SteeringComponent
-                                key='network'
+                                key='network-x3d'
                                 sim={new NetworkSteering()}
                                 animated='x3d'
                                 viewPoint={
