@@ -162,7 +162,6 @@ export class CrosswalkComponent extends SimulationComponent<Crosswalk> {
             };
         sim.timeNowChanged.addEventListener(updateStats);
         sim.stateChanged.addEventListener(updateStats);
-
     }
 }
     

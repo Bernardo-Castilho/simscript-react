@@ -91,6 +91,12 @@
     transition: opacity .5s;
 }
 
+code {
+    font-size: 120%;
+    background: #f0f0f0;
+    color: #b00000;
+}
+
 /* simulation charts */
 svg.ss-chart {
     margin-bottom: 1em;

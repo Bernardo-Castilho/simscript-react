@@ -6,6 +6,7 @@ import { SimulationComponent } from './simscript-react/components';
 import { BarberShop } from './simulations/simscript/barbershop';
 import { MMC, MMCComponent } from './simulations/simscript/mmc';
 import { Crosswalk, CrosswalkComponent } from './simulations/simscript/crosswalk';
+import { Asteroids, AsteroidsComponent } from './simulations/simscript/asteroids';
 
 // GPSS samples
 import { Telephone, TelephoneComponent } from './simulations/gpss/telephone';
@@ -48,6 +49,7 @@ export default function App() {
                             <MyLink to='/mmc-cst'>M/M/C (custom)</MyLink>
                             <MyLink to='/xwlk'>Crosswalk</MyLink>
                             <MyLink to='/xwlk-anim'>Crosswalk (animated)</MyLink>
+                            <MyLink to='/asteroids'>Asteroids</MyLink>
                         </details>
                         <details>
                             <summary>GPSS</summary>
@@ -151,6 +153,36 @@ export default function App() {
                                 key='xwlk-anim'
                                 sim={new Crosswalk({ slowMode: true })}
                                 animated='svg' />
+                        </div>
+                    </Route>
+                    <Route path='/asteroids'>
+                        <div>
+                            <h1>
+                                Asteroids</h1>
+                            <p>
+                                <b>SimScript</b> is not a game engine, but it can be used to
+                                create simple games such as the classic <b>Asteroids</b>.</p>
+                            <p>
+                                This sample shows how simulations can handle keyboard and
+                                touch events, and perform collision tests.</p>
+                            <p>
+                                To play, press the run button and use these keys:</p>
+                            <ul>
+                                <li>
+                                    <code>LEFT/RIGHT</code> arrows to turn the ship
+                                    (or swipe left/right on touch devices).</li>
+                                <li>
+                                    <code>UP</code> arrow to accelerate
+                                    (or swipe up on touch devices).</li>
+                                <li>
+                                    <code>SPACE</code> bar to fire a missile
+                                    (or tap on touch devices).</li>
+                                <li>
+                                    <code>S</code> to toggle sound effects.</li>
+                            </ul>
+                            <AsteroidsComponent
+                                key='asteroids'
+                                sim={new Asteroids()} />
                         </div>
                     </Route>
 
