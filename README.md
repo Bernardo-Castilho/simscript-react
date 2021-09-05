@@ -10,7 +10,3 @@ render simulations with custom handling for simulation parameters,
 custom output, and animations.
 
 [Run the sample](https://bernardo-castilho.github.io/simscript/react/).
-
-Asteroids:
-- engine
-- status line (won/lost)
